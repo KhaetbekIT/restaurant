@@ -4,8 +4,13 @@ import { Container } from "../widgets/container"
 import Logo from "./../assets/logo.svg"
 import { Link } from "react-router"
 import { RiShoppingCart2Line } from "react-icons/ri"
+import { useAuth } from "../stores/auth.store"
 
 export const Header = () => {
+    const user = useAuth(state => state.user);
+
+    const logout = useAuth(state => state.handleLogout);
+
     return <header
         className="pt-[44px] pb-[25px]"
     >
@@ -19,13 +24,22 @@ export const Header = () => {
                 </Link>
 
                 <div className="space-x-2">
-                    <Button color="blue">
-                        <GoPerson />
 
-                        <span>
-                            Войти
-                        </span>
-                    </Button>
+                    {
+                        user.email ?
+                            <Button color="blue" onClick={logout}>
+                                Выйти
+                            </Button>
+                            : <Link to={"/login"}>
+                                <Button color="blue">
+                                    <GoPerson />
+
+                                    <span>
+                                        Войти
+                                    </span>
+                                </Button>
+                            </Link>
+                    }
 
                     <Link to={"/cart"}>
                         <Button color="white">
